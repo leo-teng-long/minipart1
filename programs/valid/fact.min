@@ -1,0 +1,24 @@
+
+# Compute x! (x factorial)
+
+var x : int;
+var y : int;
+var z : int;
+
+read x;
+if x then
+  print "Good input";
+else
+  print "Bad input";
+endif
+
+y = 1;
+z = 1;
+
+while x do
+  z = z * x;
+  y = y + 1;
+  x = x - 1;
+done
+
+print "Factorial of " + y + " is equal to " + z;

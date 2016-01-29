@@ -1,0 +1,110 @@
+
+Package mini;
+
+Helpers
+
+  all                = [0..0xffff];
+  digit              = ['0'..'9'];
+  lowercase          = ['a'..'z'];
+  uppercase          = ['A'..'Z'];
+  letter             = lowercase | uppercase;
+  letter_or_us       = letter | '_';
+  letter_digit_or_us = letter | digit | '_';
+  separator          = ',' | '.' | '?' | '!';
+  space              = ' ';
+  tab                = 9;
+  cr                 = 13;
+  lf                 = 10;
+
+Tokens
+
+  var    = 'var';
+  int    = 'int';
+  float  = 'float';
+  string = 'string';
+  while  = 'while';
+  do     = 'do';
+  done   = 'done';
+  if     = 'if';
+  then   = 'then';
+  else   = 'else';
+  endif  = 'endif';
+  read   = 'read';
+  print  = 'print';
+
+  equal  = '=';
+  plus   = '+';
+  minus  = '-';
+  mul    = '*';
+  div    = '/';
+  l_par  = '(';
+  r_par  = ')';
+  col    = ':';
+  semi   = ';';
+
+  id          = letter_or_us letter_digit_or_us*;
+  intconst    = '0' | [digit - '0'] digit*;
+  floatconst  = ('0' | [digit - '0'] digit*) '.' digit* | '.' digit+;
+  stringconst = '"' (letter | digit | space | separator)* '"';
+
+  comment = '#' [all - lf]* lf;
+  blank   = (space | tab)+;
+  eol     = cr | lf | cr lf;
+
+Ignored Tokens
+
+  comment, blank, eol;
+
+Productions
+
+  prog =
+    {program}   decl* stmt*;
+
+  decl =
+    {declare}   var id col type semi;
+
+  type =
+    {int}       int
+  | {float}     float
+  | {string}    string;
+
+  stmt =
+    {assign}    assign
+  | {ifelse}    ifelse
+  | {loop}      loop
+  | {input}     input
+  | {output}    output;
+
+  assign =
+    {assign}    id equal expr semi;
+
+  ifelse =
+    {if}        if expr then stmt* endif
+  | {ifelse}    if expr then [then_stmts]:stmt* else [else_stmts]:stmt* endif;
+
+  loop =
+    {while}     while expr do stmt* done;
+
+  input =
+    {read}      read id semi;
+
+  output =
+    {print}     print expr semi;
+
+  expr =
+    {plut}      expr plus factor
+  | {minus}     expr minus factor
+  | {factor}    factor;
+
+  factor =
+    {multiply}  factor mul term
+  | {divide}    factor div term
+  | {term}      term;
+
+  term =
+    {paren}     l_par expr r_par
+  | {unary}     minus term
+  | {id}        id
+  | {int}       intconst
+  | {float}     floatconst
+  | {string}    stringconst;

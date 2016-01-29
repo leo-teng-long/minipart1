@@ -1,0 +1,3 @@
+# id starts with digits
+
+var 0_id : int;

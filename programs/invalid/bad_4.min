@@ -1,0 +1,3 @@
+# missing ';' after statement
+
+var x : float
