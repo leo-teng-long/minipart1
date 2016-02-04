@@ -1,6 +1,3 @@
-Name: Teng (Leo) Long
-Student ID: 260616355
-
 - Build source code:
   'cd /src', open Makefile to change the path to SableCC ver.3 and 'make'
   (please refer to Makefile for more options)
